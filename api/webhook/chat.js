@@ -24,64 +24,62 @@ export default async function handler(req, res) {
     const body = req.body;
     console.log('Received request body:', body);
 
-    // Check if we're in development mode
+    // Check if we're in development mode (running on localhost)
     const isDevelopment = process.env.NODE_ENV === 'development' || req.headers.host.includes('localhost');
 
+    let targetWebhookUrl;
+
     if (isDevelopment) {
-      // Forward the request to the localhost endpoint
-      const localhostUrl = 'http://localhost:5678/webhook/d0b3516a-e6c1-488b-b8c5-b39f57c8a3eb/chat';
-      console.log('Forwarding request to:', localhostUrl);
-
-      try {
-        const response = await fetch(localhostUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body)
-        });
-
-        if (!response.ok) {
-          console.error('Local server error:', response.status, response.statusText);
-          throw new Error(`Local server responded with status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('Response from local server:', data);
-        return res.status(200).json(data);
-      } catch (fetchError) {
-        console.error('Local server fetch error:', fetchError);
-        // If local server is not available, return a helpful error message
-        return res.status(500).json({
-          error: 'Failed to connect to local development server',
-          message: 'Please make sure your local server is running at http://localhost:5678',
-          details: fetchError.message
-        });
-      }
+      // In development, forward to local n8n instance
+      targetWebhookUrl = 'http://localhost:5678/webhook/d0b3516a-e6c1-488b-b8c5-b39f57c8a3eb/chat';
+      console.log('Forwarding request to local n8n:', targetWebhookUrl);
     } else {
-      // In production, return a mock response based on the action
-      console.log('Returning mock response in production for action:', body?.[0]?.action);
-      let mockResponse = {
-        type: 'text',
-        text: "I'm a mock response from the production server. The local development server is not available in production.",
-        error: false
-      };
+      // In production, forward to the public n8n webhook on Render
+      targetWebhookUrl = 'https://sweepdemo-workflow.onrender.com/webhook/d0b3516a-e6c1-488b-b8c5-b39f57c8a3eb/chat';
+      console.log('Forwarding request to public n8n on Render:', targetWebhookUrl);
+    }
 
-      if (body?.[0]?.action === 'loadPreviousSession') {
-        mockResponse.text = "👋 Welcome to the SweepAI Demo! How can I help you today?";
-      } else if (body?.[0]?.action === 'sendMessage') {
-        mockResponse.text = `You said: ${body?.[0]?.chatInput}. This is a mock response.`;
+    try {
+      const response = await fetch(targetWebhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Optionally forward other relevant headers from the original request
+          // ...req.headers // Be cautious about forwarding all headers
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        console.error('Target webhook responded with status:', response.status, response.statusText);
+        // Attempt to read response body for more details if available
+        const errorBody = await response.text().catch(() => 'No response body');
+        console.error('Target webhook error body:', errorBody);
+        throw new Error(`Target webhook responded with status: ${response.status} - ${response.statusText}`);
       }
 
-      return res.status(200).json([mockResponse]);
+      const data = await response.json();
+      console.log('Response from target webhook:', data);
+      return res.status(response.status).json(data); // Pass through the status code
+
+    } catch (fetchError) {
+      console.error('Error forwarding request to target webhook:', fetchError);
+      // Provide a helpful error message if the target webhook is unreachable or returns an error
+      const userErrorMessage = isDevelopment 
+        ? 'Failed to connect to local n8n instance. Please make sure it is running.'
+        : 'Failed to connect to the public n8n webhook. Please check the n8n service.';
+
+      return res.status(500).json({
+        error: userErrorMessage,
+        details: fetchError.message
+      });
     }
 
   } catch (error) {
     console.error('Webhook internal error:', error);
-
-    // For other internal errors, return a generic error message
+    // For other internal errors in the Vercel function itself
     return res.status(500).json({
-      error: 'Internal server error',
+      error: 'Internal server error in Vercel function',
       message: error.message
     });
   }

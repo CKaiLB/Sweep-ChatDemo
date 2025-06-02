@@ -495,7 +495,7 @@
             // Show loading state
             const loadingMessageDiv = document.createElement('div');
             loadingMessageDiv.className = 'chat-message bot loading';
-            loadingMessageDiv.textContent = '...';
+            loadingMessageDiv.textContent = 'loading...';
             messagesContainer.appendChild(loadingMessageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
 

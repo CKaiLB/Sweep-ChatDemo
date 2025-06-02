@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="Screenshot 2025-06-01 at 7.58.03 PM.png" type="image/x-icon" />
+    <link rel="icon" href="SWEEP_Logo_compressed_copy-removebg-preview copy.png" type="image/x-icon" />
     <title>SweepAI Demo</title>
     <style>
       :root {
@@ -266,10 +266,20 @@
           transform: translateY(-4px);
         }
       }
+
+      .header-logo {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 200px; /* Adjust size as needed */
+        height: auto;
+        z-index: 10;
+      }
     </style>
   </head>
   <body>
     <div id="root">
+      <img src="SWEEP_Logo_compressed_copy-removebg-preview copy.png" alt="SweepAI Demo Header" class="header-logo"/>
       <div class="demo-container">
         <h1 class="demo-title">SweepAI Demo</h1>
         <p class="demo-subtitle">Experience the future of AI-powered conversations</p>
@@ -299,7 +309,7 @@
               <li>Try asking follow-up questions to test the conversation flow</li>
               <li>Test different types of queries to experience the AI's capabilities</li>
             </ol>
-            <p style="color: #4a90e2; margin-top: 1rem; font-weight: 500;">Note: The chat widget is connected to a local development server. Make sure the server is running at http://localhost:5678 for the chat to function properly.</p>
+            <p style="color: #4a90e2; margin-top: 1rem; font-weight: 500;">Note: The chat widget is connected to a local development server. Make sure the server is running at for the chat to function properly. If issues arise please contact Sweep management. If responses are delayed wait until the retry button appears</p>
           </div>
         </div>
       </div>
@@ -335,7 +345,7 @@
         },
         branding: {
           logo: 'Screenshot 2025-06-01 at 7.58.03 PM.png',
-          name: 'SweepAI Demo',
+          name: 'Isanti Grappling Club AI Demo',
           welcomeText: '👋 Welcome to the future of AI chat!',
           responseTimeText: 'Real-time responses powered by advanced AI'
         },
