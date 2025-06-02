@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="src/assets/SWEEP_favicon.png" type="image/x-icon" />
+    <title>SweepAI Demo</title>
+    <style>
+      :root {
+        --gradient-primary: linear-gradient(135deg, #4a90e2 0%, #854fff 100%);
+        --gradient-secondary: linear-gradient(135deg, #6b3fd4 0%, #4a90e2 100%);
+      }
+      
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: #0a0a1a;
+        color: #ffffff;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      #root {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 2rem;
+      }
+
+      .demo-container {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .demo-title {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 800;
+      }
+
+      .demo-subtitle {
+        font-size: 1.2rem;
+        color: #a0a0a0;
+        margin-bottom: 2rem;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 2rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-title {
+        color: #4a90e2;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .feature-description {
+        color: #a0a0a0;
+        line-height: 1.6;
+      }
+
+      .testing-instructions {
+        margin-top: 4rem;
+        padding: 2rem;
+      }
+
+      .instruction-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 2rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 1rem;
+      }
+
+      .instruction-card ol {
+        margin: 0;
+        padding-left: 1.5rem;
+      }
+
+      .instruction-card li {
+        margin-bottom: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="demo-container">
+        <h1 class="demo-title">SweepAI Demo</h1>
+        <p class="demo-subtitle">Experience the future of AI-powered conversations</p>
+        
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3 class="feature-title">Smart Responses</h3>
+            <p class="feature-description">Advanced AI technology for natural, context-aware conversations</p>
+          </div>
+          <div class="feature-card">
+            <h3 class="feature-title">Real-time Analysis</h3>
+            <p class="feature-description">Instant processing and intelligent response generation</p>
+          </div>
+          <div class="feature-card">
+            <h3 class="feature-title">Seamless Integration</h3>
+            <p class="feature-description">Easy to implement and customize for your needs</p>
+          </div>
+        </div>
+
+        <div class="testing-instructions">
+          <h2 class="demo-title" style="font-size: 2rem; margin-top: 3rem;">Testing Instructions</h2>
+          <div class="instruction-card">
+            <ol style="text-align: left; color: #a0a0a0; line-height: 1.8;">
+              <li>Click the chat icon in the bottom right corner to open the chat widget</li>
+              <li>Type a test message like "Hello" or "What can you help me with?"</li>
+              <li>Wait for the AI response (typically instant)</li>
+              <li>Try asking follow-up questions to test the conversation flow</li>
+              <li>Test different types of queries to experience the AI's capabilities</li>
+            </ol>
+            <p style="color: #4a90e2; margin-top: 1rem; font-weight: 500;">Note: The chat widget is connected to a local development server. Make sure the server is running at http://localhost:5678 for the chat to function properly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Widget Configuration -->
+    <script>
+      window.ChatWidgetConfig = {
+        webhook: {
+          url: 'http://localhost:5678/webhook/d0b3516a-e6c1-488b-b8c5-b39f57c8a3eb/chat',
+          route: 'general'
+        },
+        branding: {
+          logo: 'Screenshot 2025-06-01 at 7.58.03 PM.png',
+          name: 'SweepAI Demo',
+          welcomeText: '👋 Welcome to the future of AI chat!',
+          responseTimeText: 'Real-time responses powered by advanced AI'
+        },
+        style: {
+          primaryColor: '#4a90e2',
+          secondaryColor: '#854fff',
+          position: 'right',
+          backgroundColor: 'rgba(10, 10, 26, 0.95)',
+          fontColor: '#ffffff',
+          borderRadius: '16px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
+        }
+      };
+    </script>
+    <script src="demo.js"></script>
+  </body>
+</html>
