@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.png",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.svg",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/webhook/chat",
+      "dest": "/api/webhook/chat.js",
+      "methods": ["GET", "POST", "OPTIONS"]
+    },
+    {
+      "src": "/webhook/(.*)",
+      "dest": "/api/webhook/chat.js",
+      "methods": ["GET", "POST", "OPTIONS"]
+    },
+    {
+      "src": "/style.css",
+      "dest": "/style.css"
+    },
+    {
+      "src": "/vite.svg",
+      "dest": "/vite.svg"
+    },
+    {
+      "src": "/demo.js",
+      "dest": "/demo.js"
+    },
+    {
+      "src": "/Screenshot 2025-06-01 at 7.58.03 PM.png",
+      "dest": "/Screenshot 2025-06-01 at 7.58.03 PM.png"
+    },
+    {
+      "src": "/",
+      "dest": "/demo.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+} 

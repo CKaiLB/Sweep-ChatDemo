@@ -407,6 +407,13 @@
         }];
 
         try {
+            // Show loading state
+            const loadingMessageDiv = document.createElement('div');
+            loadingMessageDiv.className = 'chat-message bot loading';
+            loadingMessageDiv.textContent = 'Connecting to chat service...';
+            messagesContainer.appendChild(loadingMessageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
             const response = await fetch(config.webhook.url, {
                 method: 'POST',
                 headers: {
@@ -415,18 +422,55 @@
                 body: JSON.stringify(data)
             });
 
+            // Remove loading message
+            loadingMessageDiv.remove();
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const responseData = await response.json();
+            console.log('Response data from webhook (startNewConversation):', responseData);
+
             chatContainer.querySelector('.brand-header').style.display = 'none';
             chatContainer.querySelector('.new-conversation').style.display = 'none';
             chatInterface.classList.add('active');
 
             const botMessageDiv = document.createElement('div');
             botMessageDiv.className = 'chat-message bot';
-            botMessageDiv.textContent = Array.isArray(responseData) ? responseData[0].output : responseData.output;
+            const initialMessageText = Array.isArray(responseData) 
+                ? (responseData[0].text || responseData[0].output) 
+                : (responseData.text || responseData.output);
+            botMessageDiv.textContent = initialMessageText;
             messagesContainer.appendChild(botMessageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         } catch (error) {
             console.error('Error:', error);
+            // Show error message to user
+            const errorMessageDiv = document.createElement('div');
+            errorMessageDiv.className = 'chat-message bot error';
+            errorMessageDiv.innerHTML = `
+                <p>Sorry, there was an error connecting to the chat service.</p>
+                <p style="font-size: 12px; opacity: 0.7;">Error: ${error.message}</p>
+                <button class="retry-button" style="
+                    background: var(--chat--color-primary);
+                    color: white;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    margin-top: 8px;
+                    cursor: pointer;
+                ">Retry Connection</button>
+            `;
+            messagesContainer.appendChild(errorMessageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Add retry button handler
+            const retryButton = errorMessageDiv.querySelector('.retry-button');
+            retryButton.addEventListener('click', () => {
+                errorMessageDiv.remove();
+                startNewConversation();
+            });
         }
     }
 
@@ -448,6 +492,13 @@
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
         try {
+            // Show loading state
+            const loadingMessageDiv = document.createElement('div');
+            loadingMessageDiv.className = 'chat-message bot loading';
+            loadingMessageDiv.textContent = '...';
+            messagesContainer.appendChild(loadingMessageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
             const response = await fetch(config.webhook.url, {
                 method: 'POST',
                 headers: {
@@ -456,15 +507,51 @@
                 body: JSON.stringify(messageData)
             });
             
+            // Remove loading message
+            loadingMessageDiv.remove();
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
+            console.log('Response data from webhook (sendMessage):', data);
             
             const botMessageDiv = document.createElement('div');
             botMessageDiv.className = 'chat-message bot';
-            botMessageDiv.textContent = Array.isArray(data) ? data[0].output : data.output;
+            const messageText = Array.isArray(data) 
+                ? (data[0].text || data[0].output) 
+                : (data.text || data.output);
+            botMessageDiv.textContent = messageText;
             messagesContainer.appendChild(botMessageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         } catch (error) {
             console.error('Error:', error);
+            // Show error message to user
+            const errorMessageDiv = document.createElement('div');
+            errorMessageDiv.className = 'chat-message bot error';
+            errorMessageDiv.innerHTML = `
+                <p>Sorry, there was an error sending your message.</p>
+                <p style="font-size: 12px; opacity: 0.7;">Error: ${error.message}</p>
+                <button class="retry-button" style="
+                    background: var(--chat--color-primary);
+                    color: white;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    margin-top: 8px;
+                    cursor: pointer;
+                ">Retry</button>
+            `;
+            messagesContainer.appendChild(errorMessageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Add retry button handler
+            const retryButton = errorMessageDiv.querySelector('.retry-button');
+            retryButton.addEventListener('click', () => {
+                errorMessageDiv.remove();
+                sendMessage(message);
+            });
         }
     }
 
