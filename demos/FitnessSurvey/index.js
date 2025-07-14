@@ -352,7 +352,7 @@ const surveyData = {
     
         // Check if we successfully extracted and concatenated HTML content
         if (finalHtmlContent) {
-            showResults(finalHtmlContent);
+            showResults();
         } else {
             console.error("No valid HTML content found or extracted from webhook response array.", result);
             throw new Error("No valid HTML content found or extracted from webhook response array.");
@@ -415,10 +415,18 @@ const surveyData = {
     }
   }
   
-  // Show results screen
-  function showResults(htmlContent) {
+  // Replace showResults to display a success message instead of the plan
+  function showResults() {
     loadingScreen.classList.add("hidden")
-    resultsContent.innerHTML = htmlContent
+    resultsContent.innerHTML = `
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 300px;">
+        <div style="background: linear-gradient(135deg, #dbeafe, #ede9fe); padding: 32px 24px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); max-width: 480px; text-align: center;">
+          <h2 style="font-size: 2rem; font-weight: bold; color: #1e3a8a; margin-bottom: 16px;">Success!</h2>
+          <p style="font-size: 1.2rem; color: #1f2937;">Your custom AI plan has been sent to your inbox.</p>
+          <p style="margin-top: 24px; color: #6b7280; font-size: 1rem;">Check your email for your personalized fitness and nutrition plan. If you don't see it, check your spam or promotions folder.</p>
+        </div>
+      </div>
+    `
     resultsScreen.classList.remove("hidden")
   }
   
