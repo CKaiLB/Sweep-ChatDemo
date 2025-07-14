@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../public/images/SWEEP_favicon.png" type="image/x-icon" />
+    <title>Fitness Survey - Sweep</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: #0a0a1a;
+        color: #ffffff;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      .header {
+        padding: 2rem;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .header-logo {
+        width: 180px;
+        height: auto;
+        margin-bottom: 1rem;
+      }
+
+      .demo-title {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        font-weight: 800;
+        color: transparent;
+      }
+
+      .demo-subtitle {
+        font-size: 1.1rem;
+        color: #a0a0a0;
+        margin-bottom: 0;
+      }
+
+      .main-content {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        gap: 2rem;
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        min-height: calc(100vh - 200px);
+      }
+
+      .features-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 1.5rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-title {
+        color: #4a90e2;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .feature-description {
+        color: #a0a0a0;
+        line-height: 1.6;
+        font-size: 0.9rem;
+      }
+
+      .instructions-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .instruction-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 1.5rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .instruction-title {
+        color: #4a90e2;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+
+      .instruction-card ol {
+        margin: 0;
+        padding-left: 1.5rem;
+        color: #a0a0a0;
+        font-size: 0.9rem;
+      }
+
+      .instruction-card li {
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 1200px) {
+        .main-content {
+          grid-template-columns: 1fr;
+          max-width: 800px;
+        }
+
+        .features-section, .instructions-section {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 1rem;
+        }
+      }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="../../public/images/SWEEP_Logo.png" alt="Sweep Logo" class="header-logo">
+        <h1 class="demo-title">AI Powered Fitness and Nutrition Planner</h1>
+        <p class="demo-subtitle">Fill out the survey and watch our AI generate you a week long plan based on its data driven insights!</p>
+      </div>
+  
+      <div class="main-content">
+        <div class="features-section">
+          <div class="feature-card">
+            <h3 class="feature-title">Instant Output</h3>
+            <p class="feature-description">Get instant, well structured plans that save you hours of manual work.</p>
+          </div>
+          <div class="feature-card">
+            <h3 class="feature-title">Context Analysis</h3>
+            <p class="feature-description">The AI references all your survey responses for more meaningful and tailored Output.</p>
+          </div>
+          <div class="feature-card">
+            <h3 class="feature-title">Customizable</h3>
+            <p class="feature-description">Tailor the survey experience to match your brand or plan formula.</p>
+          </div>
+        </div>
+
+        <div class="container">
+
+            <!-- Survey Card -->
+            <div class="survey-card">
+                <!-- Header -->
+                <div class="survey-header">
+                    <h1 class="survey-title">Fitness Survey</h1>
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span class="step-text">Step <span id="current-step">1</span> of 10</span>
+                            <span class="progress-percent">10% Complete</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Survey Content -->
+                <div class="survey-content" id="survey-content">
+                    <!-- Steps will be dynamically inserted here -->
+                </div>
+    
+                <!-- Navigation -->
+                <div class="survey-navigation">
+                    <button class="btn btn-outline" id="prev-btn" disabled>
+                        <span class="btn-icon">←</span>
+                        Previous
+                    </button>
+                    <button class="btn btn-primary" id="next-btn" disabled>
+                        Next
+                        <span class="btn-icon">→</span>
+                    </button>
+                </div>
+            </div>
+    
+            <!-- Loading Screen -->
+            <div class="loading-screen hidden" id="loading-screen">
+                <div class="loading-card">
+                    <div class="spinner"></div>
+                    <h2>Generating your plan...</h2>
+                    <p>Our AI is analyzing your responses and creating a personalized fitness and nutrition plan just for you...</p>
+                </div>
+            </div>
+    
+            <!-- Results Screen -->
+            <div class="results-screen hidden" id="results-screen">
+                <div class="results-header">
+                    <img src="../../public/images/SWEEP_Logo.png" alt="Sweep Logo" class="logo">
+                    <div class="success-icon">✓</div>
+                    <h1>Plan Generated Successfully!</h1>
+                    <p>Your personalized fitness and nutrition plan is ready.</p>
+                </div>
+                <div class="results-card">
+                    <div class="results-content" id="results-content">
+                        <!-- Generated plan will be inserted here -->
+                    </div>
+                    <div class="results-actions">
+                        <button class="btn btn-primary" onclick="window.print()">
+                            Print Your Plan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+        <div class="instructions-section">
+          <div class="instruction-card">
+            <h3 class="instruction-title">Getting Started</h3>
+            <ol>
+              <li>Fill out the quick 10 question survey</li>
+              <li>Press Enter or click Send to submit</li>
+              <li>Wait for the AI to process and generate a response</li>
+              <li>Check our your custom fitness and nutrotion plan!</li>
+            </ol>
+          </div>
+          <div class="instruction-card">
+            <h3 class="instruction-title">Tips for Best Results</h3>
+            <ol>
+              <li>Be specific in your responses</li>
+              <li>Provide context when needed</li>
+              <li>Use natural language</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+    <script src="config.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

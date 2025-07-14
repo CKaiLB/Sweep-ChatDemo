@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/images/SWEEP_favicon.png" type="image/x-icon" />
+    <title>Welcome to the G.Y.M. Sweep Demo Terminal</title>
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+    <style>
+      :root {
+        --gradient-primary: linear-gradient(135deg, #4a90e2 0%, #854fff 100%);
+        --gradient-secondary: linear-gradient(135deg, #6b3fd4 0%, #4a90e2 100%);
+        
+        /* Override n8n chat variables to match our style */
+        --chat--color-primary: #4a90e2;
+        --chat--color-primary-shade-50: #3a80d2;
+        --chat--color-primary-shade-100: #2a70c2;
+        --chat--color-secondary: #854fff;
+        --chat--color-secondary-shade-50: #754fef;
+        --chat--color-white: #ffffff;
+        --chat--color-light: #f2f4f8;
+        --chat--color-light-shade-50: #e6e9f1;
+        --chat--color-light-shade-100: #c2c5cc;
+        --chat--color-medium: #d2d4d9;
+        --chat--color-dark: #0a0a1a;
+        --chat--color-disabled: #777980;
+        --chat--color-typing: #404040;
+
+        --chat--spacing: 1rem;
+        --chat--border-radius: 16px;
+        --chat--transition-duration: 0.3s;
+
+        --chat--window--width: 100%;
+        --chat--window--height: 600px;
+
+        --chat--header-height: auto;
+        --chat--header--padding: var(--chat--spacing);
+        --chat--header--background: rgba(0, 0, 0, 0.3);
+        --chat--header--color: var(--chat--color-white);
+        --chat--header--border-top: none;
+        --chat--header--border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        --chat--heading--font-size: 1.2em;
+        --chat--subtitle--font-size: inherit;
+        --chat--subtitle--line-height: 1.8;
+
+        --chat--textarea--height: 50px;
+
+        --chat--message--font-size: 1rem;
+        --chat--message--padding: var(--chat--spacing);
+        --chat--message--border-radius: var(--chat--border-radius);
+        --chat--message-line-height: 1.8;
+        --chat--message--bot--background: rgba(0, 0, 0, 0.3);
+        --chat--message--bot--color: var(--chat--color-white);
+        --chat--message--bot--border: none;
+        --chat--message--user--background: var(--gradient-primary);
+        --chat--message--user--color: var(--chat--color-white);
+        --chat--message--user--border: none;
+        --chat--message--pre--background: rgba(0, 0, 0, 0.3);
+      }
+      
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: #0a0a1a;
+        color: #ffffff;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      .header {
+        padding: 2rem;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .header-logo {
+        width: 180px;
+        height: auto;
+        margin-bottom: 1rem;
+      }
+
+      .demo-title {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 800;
+      }
+
+      .demo-subtitle {
+        font-size: 1.1rem;
+        color: #a0a0a0;
+        margin-bottom: 0;
+      }
+
+      .main-content {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        gap: 2rem;
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        min-height: calc(100vh - 200px);
+      }
+
+      .features-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 1.5rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-title {
+        color: #4a90e2;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .feature-description {
+        color: #a0a0a0;
+        line-height: 1.6;
+        font-size: 0.9rem;
+      }
+
+      .chat-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .instructions-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .instruction-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 1.5rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .instruction-title {
+        color: #4a90e2;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+
+      .instruction-card ol {
+        margin: 0;
+        padding-left: 1.5rem;
+        color: #a0a0a0;
+        font-size: 0.9rem;
+      }
+
+      .instruction-card li {
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 1200px) {
+        .main-content {
+          grid-template-columns: 1fr;
+          max-width: 800px;
+        }
+
+        .features-section, .instructions-section {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 1rem;
+        }
+      }
+
+      /* Additional styles for fullscreen chat */
+      #n8n-chat {
+        width: 100%;
+        height: 600px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Ensure styles apply to the Shadow DOM if used by setting variables */
+        --chat--color-white: #ffffff;
+        --chat--color-light: rgba(255, 255, 255, 0.05);
+        --chat--color-light-shade-50: rgba(255, 255, 255, 0.1);
+        --chat--color-dark: #0a0a1a;
+        
+        --chat--header--background: rgba(255, 255, 255, 0.05);
+        --chat--input--background: rgba(255, 255, 255, 0.05);
+        
+        --chat--message--bot--background: rgba(255, 255, 255, 0.1);
+        --chat--message--user--background: var(--gradient-primary);
+        --chat--message--bot--color: #ffffff;
+        --chat--message--user--color: #ffffff;
+      }
+
+      #n8n-chat .chat-container {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+      }
+
+      #n8n-chat .chat-header {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+      }
+
+      #n8n-chat .chat-messages {
+        background: transparent !important;
+      }
+
+      #n8n-chat .chat-input {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+      }
+
+      #n8n-chat .chat-input textarea {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important; /* Ensure input text is white */
+      }
+
+      #n8n-chat .chat-input textarea::placeholder {
+        color: rgba(255, 255, 255, 0.5) !important;
+      }
+
+      #n8n-chat .chat-input input {
+          color: #ffffff !important; /* Ensure input text is white */
+          background: rgba(255, 255, 255, 0.05) !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      }
+
+      #n8n-chat input::placeholder,
+      #n8n-chat textarea::placeholder {
+          color: rgba(255, 255, 255, 0.5) !important;
+      }
+
+      #n8n-chat .chat-input-container {
+        background: rgba(255, 255, 255, 0.05) !important;
+      }
+
+      /* Hide the chat toggle button */
+      #n8n-chat .chat-toggle {
+        display: none !important;
+      }
+
+      /* Additional message styling */
+      #n8n-chat .message {
+        color: #ffffff !important; /* Ensure message text is white */
+        max-width: 70%; /* Limit bubble width */
+        margin-bottom: 10px; /* Space between messages */
+        padding: 10px 15px !important; /* Padding inside bubbles, increased specificity */
+        border-radius: 18px !important; /* Rounded corners for bubbles, increased specificity */
+        clear: both !important; /* Clear floats, increased specificity */
+        display: block !important; /* Ensure message is a block element for alignment */
+      }
+
+      #n8n-chat .message.user {
+        background: var(--gradient-primary) !important; /* Use gradient background */
+        border: none !important;
+        color: #ffffff !important; /* Ensure user message text is white */
+        margin-left: auto !important; /* Align user messages to the right */
+        margin-right: 0 !important;
+        float: right !important; /* Use float to help with alignment */
+      }
+
+      #n8n-chat .message.bot {
+        background: rgba(255, 255, 255, 0.1) !important; /* Slightly lighter for contrast with new chat background */
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: #ffffff !important; /* Ensure bot message text is white */
+        margin-right: auto !important; /* Align bot messages to the left */
+        margin-left: 0 !important;
+        float: left !important; /* Use float to help with alignment */
+      }
+
+      #n8n-chat .message pre {
+         background: rgba(0, 0, 0, 0.3) !important;
+         border-radius: 8px !important;
+         padding: 10px !important;
+         overflow-x: auto !important;
+         color: #ffffff !important; /* Ensure code text is white */
+      }
+
+      /* Ensure text in message content is white */
+      #n8n-chat .message-content {
+          color: #ffffff !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <img src="../../public/images/SWEEP_Logo.png" alt="Sweep Logo" class="header-logo">
+      <h1 class="demo-title">G.Y.M. Sales Agent</h1>
+      <p class="demo-subtitle">Ask the AI anything about getting started with G.Y.M!</p>
+    </div>
+
+    <div class="main-content">
+      <div class="features-section">
+        <div class="feature-card">
+          <h3 class="feature-title">Real-time Responses</h3>
+          <p class="feature-description">Get instant, natural-sounding responses powered by advanced AI technology.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">Context Awareness</h3>
+          <p class="feature-description">The AI maintains context throughout the conversation for more meaningful interactions.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">Customizable</h3>
+          <p class="feature-description">Tailor the chat experience to match your brand and specific use cases.</p>
+        </div>
+      </div>
+
+      <div class="chat-section">
+        <div id="n8n-chat"></div>
+      </div>
+
+      <div class="instructions-section">
+        <div class="instruction-card">
+          <h3 class="instruction-title">Getting Started</h3>
+          <ol>
+            <li>Type your message in the input field</li>
+            <li>Press Enter or click Send to submit</li>
+            <li>Wait for the AI to process and respond</li>
+            <li>Continue the conversation naturally</li>
+          </ol>
+        </div>
+        <div class="instruction-card">
+          <h3 class="instruction-title">Tips for Best Results</h3>
+          <ol>
+            <li>Be specific in your questions</li>
+            <li>Provide context when needed</li>
+            <li>Use natural language</li>
+            <li>Feel free to ask follow-up questions</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+      const webhookUrl = localStorage.getItem('webhook_url');
+
+      if (!webhookUrl) {
+        console.error('No webhook URL found. Please authenticate first.');
+        document.getElementById('n8n-chat').innerHTML = '<div style="color: #ff4444; text-align: center; padding: 20px;">Please return to the login page and authenticate first.</div>';
+      } else {
+        createChat({
+          webhookUrl: webhookUrl,
+          target: '#n8n-chat',
+          mode: 'fullscreen',
+          showWelcomeScreen: false,
+          initialMessages: [
+            '👋 Hi! Welcome to G.Y.M!'
+          ],
+          i18n: {
+            en: {
+              title: 'G.Y.M. Sales Agent',
+              subtitle: "Ask the AI anything about getting started at G.Y.M.!",
+              footer: '',
+              getStarted: 'New Conversation',
+              inputPlaceholder: 'Type your message...',
+            },
+          },
+          webhookConfig: {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            }
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

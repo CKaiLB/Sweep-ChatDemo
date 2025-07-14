@@ -1,47 +1,66 @@
-# SweepAI Demo Site
+# SweepAI Demo Marketplace
 
-A modern, futuristic demo site showcasing the SweepAI chat widget capabilities.
+A collection of AI-powered chat demos showcasing different features and integrations of the SweepAI platform.
 
-## Local Development
+## Structure
+
+```
+.
+├── api/                    # API endpoints and middleware
+│   ├── auth/              # Authentication related endpoints
+│   ├── middleware/        # Request middleware
+│   └── webhook/           # Webhook handlers
+├── demos/                 # Demo pages
+│   ├── marketplace/       # Main marketplace landing page
+│   ├── basic/            # Basic chat demo
+│   └── advanced/         # Advanced integration demo
+├── public/               # Static assets
+│   └── images/          # Images and logos
+└── vercel.json          # Vercel deployment configuration
+```
+
+## Setup
 
 1. Clone the repository
-2. Open `demo.html` in your browser
-3. Make sure the backend server is running at `http://localhost:5678`
+2. Copy `.env.example` to `.env` and fill in your demo access codes
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Run locally:
+   ```bash
+   vercel dev
+   ```
 
-## Deployment
+## Adding New Demos
 
-This project is configured for deployment on Vercel.
-
-### Deploying to Vercel
-
-1. Install Vercel CLI:
-```bash
-npm install -g vercel
-```
-
-2. Login to Vercel:
-```bash
-vercel login
-```
-
-3. Deploy the project:
-```bash
-vercel
-```
-
-4. For production deployment:
-```bash
-vercel --prod
-```
+1. Create a new directory in `demos/` for your demo
+2. Add your demo files (HTML, JS, CSS)
+3. Add a new access code in your `.env` file
+4. Add a new card in `demos/marketplace/index.html`
+5. Update `vercel.json` if needed
 
 ## Environment Variables
 
-Make sure to set up the following environment variables in your Vercel project settings:
-- `WEBHOOK_URL`: Your backend webhook URL
-- `CHATBASE_ID`: Your Chatbase widget ID
+Required environment variables:
+- `BASIC_DEMO_CODE`: Access code for the basic demo
+- `ADVANCED_DEMO_CODE`: Access code for the advanced demo
+- Add more demo codes as needed
 
-## Project Structure
+## Deployment
 
-- `demo.html` - Main demo page
-- `demo.js` - Chat widget implementation
-- `vercel.json` - Vercel deployment configuration 
+The project is configured for deployment on Vercel. Push to your repository to trigger automatic deployments.
+
+## Security
+
+- Each demo is protected by a unique access code
+- Access codes should be kept secure and shared only with authorized users
+- Environment variables are encrypted in production
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request 

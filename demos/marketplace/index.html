@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweep Client Portal</title>
+    <link rel="icon" href="../../public/images/SWEEP_favicon.png" type="image/x-icon">
+    <style>
+        :root {
+            --gradient-primary: linear-gradient(135deg, #4a90e2 0%, #854fff 100%);
+            --gradient-secondary: linear-gradient(135deg, #6b3fd4 0%, #4a90e2 100%);
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: #0a0a1a;
+            color: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-logo {
+            width: 180px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .portal-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+
+        .portal-subtitle {
+            font-size: 1.1rem;
+            color: #a0a0a0;
+            margin-bottom: 0;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-title {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+
+        .login-button:hover {
+            transform: scale(1.02);
+        }
+
+        .error-message {
+            color: #ff4444;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="../../public/images/SWEEP_Logo.png" alt="Sweep Logo" class="header-logo">
+        <h1 class="portal-title">Sweep Client Portal</h1>
+        <p class="portal-subtitle">Access your custom AI demo from Sweep</p>
+    </div>
+
+    <div class="main-content">
+        <div class="login-container">
+            <h2 class="login-title">Enter Access Code</h2>
+            <div class="form-group">
+                <label class="form-label" for="accessCode">Access Code</label>
+                <input type="text" id="accessCode" class="form-input" placeholder="Enter the code provided by your account manager">
+            </div>
+            <button class="login-button" id="loginButton">Access Demo</button>
+            <p class="error-message" id="errorMessage">Invalid access code</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Need help? Contact your account manager or email <a href="mailto:sweepautomation@gmail.com">sweepautomation@gmail.com</a></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const accessCode = document.getElementById('accessCode');
+            const loginButton = document.getElementById('loginButton');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Handle login
+            loginButton.addEventListener('click', async () => {
+                const code = accessCode.value.trim();
+                if (!code) {
+                    showError('Please enter your access code');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/auth/verify', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            code
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // Store the access token and webhook URL
+                        localStorage.setItem('demo_token', data.token);
+                        localStorage.setItem('webhook_url', data.webhook);
+                        window.location.href = data.redirectUrl; // Use the redirectUrl from the backend
+                    } else {
+                        showError(data.message || 'Invalid access code');
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    showError('An error occurred. Please try again.');
+                }
+            });
+
+            // Handle Enter key
+            accessCode.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    loginButton.click();
+                }
+            });
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html> 
