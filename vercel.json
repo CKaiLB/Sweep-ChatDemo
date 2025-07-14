@@ -1,12 +1,5 @@
 {
   "version": 2,
-  "projectSettings": {
-    "framework": null,
-    "buildCommand": "npm install && node scripts/build-config.js && cp -r public/* . && cp -r demos/* .",
-    "outputDirectory": ".",
-    "installCommand": null,
-    "devCommand": null
-  },
   "routes": [
     {
       "src": "/",
