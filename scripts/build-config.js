@@ -29,8 +29,8 @@ function updateConfigFile(configPath, placeholder, envVar) {
 // Update BoonFay config
 updateConfigFile(
     path.join(__dirname, '../demos/BoonFay/config.js'),
-    '__FITNESS_SURVEY_WEBHOOK_URL__',
-    'FitnessSurveyWebhookURL'
+    '__BOONFAY_WEBHOOK_URL__',
+    'BoonFayWebhookURL'
 );
 
 // Update FitnessSurvey config

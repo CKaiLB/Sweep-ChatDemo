@@ -1,4 +1,4 @@
 // This file will be populated with environment variables during build
 window.FITNESS_SURVEY_CONFIG = {
-    webhookUrl: 'https://sweepdemo-workflow.onrender.com/webhook-test/e72c4fd2-b63d-4a5c-9cf4-bcc3e99cedfc'
+    webhookUrl: 'https://n8n-latest-ccpw.onrender.com/webhook-test/4503dcea-4223-4221-84bf-c59dc9e5f86b'
 }; 

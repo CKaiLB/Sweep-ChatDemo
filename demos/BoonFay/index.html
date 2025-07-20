@@ -284,186 +284,142 @@
       #n8n-chat .message-content {
           color: #ffffff !important;
       }
+
+      .dashboard-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+      .dashboard-card {
+        background: rgba(255,255,255,0.05);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        max-width: 500px;
+        width: 100%;
+        margin: 2rem 0;
+      }
+      .dashboard-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #4a90e2;
+        text-align: center;
+      }
+      .dashboard-form .form-group {
+        margin-bottom: 1.5rem;
+      }
+      .dashboard-form .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #a0a0a0;
+        font-weight: 500;
+      }
+      .dashboard-form .form-input, .dashboard-form .form-textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid #4a90e2;
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        font-size: 1rem;
+        resize: vertical;
+      }
+      .dashboard-form .form-input:focus, .dashboard-form .form-textarea:focus {
+        outline: none;
+        border-color: #854fff;
+        background: rgba(133,79,255,0.08);
+      }
+      .dashboard-form .btn-primary {
+        background: var(--gradient-primary);
+        color: #fff;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .dashboard-form .btn-primary:hover {
+        background: var(--gradient-secondary);
+      }
+      .form-feedback {
+        margin-top: 1rem;
+        min-height: 1.5em;
+        text-align: center;
+        font-size: 1rem;
+        color: #f59e42;
+      }
     </style>
   </head>
   <body>
     <div class="header">
       <img src="../../public/images/SWEEP_Logo.png" alt="Sweep Logo" class="header-logo">
-      <h1 class="demo-title">Welcome to Boon's Sweep Demo Terminal</h1>
-      <p class="demo-subtitle">Interact with your DM agent and get your fitness plan</p>
+      <h1 class="demo-title">Boon's Sweep Dashboard</h1>
+      <p class="demo-subtitle">Send a mass email to your audience using the tool below</p>
     </div>
 
-    <!-- Chat Section -->
+    <!-- Dashboard Section -->
     <div class="section">
       <div class="features-section">
         <div class="feature-card">
-          <h3 class="feature-title">Real-time Responses</h3>
-          <p class="feature-description">Get instant, natural-sounding responses powered by advanced AI technology.</p>
+          <h3 class="feature-title">Mass Email Dashboard</h3>
+          <p class="feature-description">Send a custom HTML email to your entire audience instantly using the n8n automation backend.</p>
         </div>
         <div class="feature-card">
-          <h3 class="feature-title">Context Awareness</h3>
-          <p class="feature-description">The AI maintains context throughout the conversation for more meaningful interactions.</p>
+          <h3 class="feature-title">HTML Formatting</h3>
+          <p class="feature-description">Compose your message in HTML for rich formatting. Preview in your email client.</p>
         </div>
         <div class="feature-card">
-          <h3 class="feature-title">Customizable</h3>
-          <p class="feature-description">Tailor the chat experience to match your brand and specific use cases.</p>
+          <h3 class="feature-title">Secure & Configurable</h3>
+          <p class="feature-description">Webhook URL is securely managed via environment variables and config.js.</p>
         </div>
       </div>
-
-      <div class="chat-section">
-        <div id="n8n-chat"></div>
+      <div class="dashboard-section">
+        <div class="dashboard-card">
+          <h2 class="dashboard-title">Send Mass Email</h2>
+          <form id="email-form" class="dashboard-form">
+            <div class="form-group">
+              <label for="subject" class="form-label">Subject</label>
+              <input type="text" id="subject" class="form-input" placeholder="Enter email subject" required />
+            </div>
+            <div class="form-group">
+              <label for="message" class="form-label">Message (HTML)</label>
+              <textarea id="message" class="form-textarea" placeholder="Enter your HTML message here" rows="8" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Email</button>
+          </form>
+          <div id="form-feedback" class="form-feedback"></div>
+        </div>
       </div>
-
       <div class="instructions-section">
         <div class="instruction-card">
-          <h3 class="instruction-title">Getting Started</h3>
+          <h3 class="instruction-title">How to Use the Dashboard</h3>
           <ol>
-            <li>Type your message in the input field</li>
-            <li>Press Enter or click Send to submit</li>
-            <li>Wait for the AI to process and respond</li>
-            <li>Continue the conversation naturally</li>
+            <li>Enter the email subject in the Subject field.</li>
+            <li>Write your message in HTML format in the Message field.</li>
+            <li>Click <strong>Send Email</strong> to deliver your message to all recipients via the n8n backend.</li>
+            <li>Wait for a confirmation or error message below the form.</li>
           </ol>
         </div>
         <div class="instruction-card">
           <h3 class="instruction-title">Tips for Best Results</h3>
           <ol>
-            <li>Be specific in your questions</li>
-            <li>Provide context when needed</li>
-            <li>Use natural language</li>
-            <li>Feel free to ask follow-up questions</li>
+            <li>Use valid HTML for rich formatting (e.g., &lt;b&gt;, &lt;i&gt;, &lt;ul&gt;, &lt;a&gt; tags).</li>
+            <li>Keep your subject clear and concise.</li>
+            <li>Test your message with a small group before mass sending.</li>
+            <li>Contact support if you encounter issues.</li>
           </ol>
         </div>
       </div>
     </div>
-
-    <!-- Survey Section -->
-    <div class="section">
-    <div class="features-section">
-      <div class="feature-card">
-        <h3 class="feature-title">Instant Output</h3>
-        <p class="feature-description">Get instant, well structured plans that save you hours of manual work.</p>
-      </div>
-      <div class="feature-card">
-        <h3 class="feature-title">Context Analysis</h3>
-        <p class="feature-description">The AI references all your survey responses for more meaningful and tailored Output.</p>
-      </div>
-      <div class="feature-card">
-        <h3 class="feature-title">Customizable</h3>
-        <p class="feature-description">Tailor the survey experience to match your brand or plan formula.</p>
-      </div>
-    </div>
-
-      <div class="survey-section">
-        <div class="survey-card">
-            <div class="survey-header">
-                <h1 class="survey-title">Fitness Survey</h1>
-                <div class="progress-container">
-                    <div class="progress-info">
-                        <span class="step-text">Step <span id="current-step">1</span> of 10</span>
-                        <span class="progress-percent">10% Complete</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress-fill"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="survey-content" id="survey-content">
-                <!-- Steps will be dynamically inserted here -->
-            </div>
-
-            <div class="survey-navigation">
-                <button class="btn btn-outline" id="prev-btn" disabled>
-                    <span class="btn-icon">←</span>
-                    Previous
-                </button>
-                <button class="btn btn-primary" id="next-btn" disabled>
-                    Next
-                    <span class="btn-icon">→</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="loading-screen hidden" id="loading-screen">
-            <div class="loading-card">
-                <div class="spinner"></div>
-                <h2>Generating your plan...</h2>
-                <p>Our AI is analyzing your responses and creating a personalized fitness and nutrition plan just for you...</p>
-            </div>
-        </div>
-
-        <div class="results-screen hidden" id="results-screen">
-            <div class="results-header">
-                <img src="../../public/images/SWEEP_Logo.png" alt="Sweep Logo" class="logo">
-                <div class="success-icon">✓</div>
-                <h1>Plan Generated Successfully!</h1>
-                <p>Your personalized fitness and nutrition plan is ready.</p>
-            </div>
-            <div class="results-card">
-                <div class="results-content" id="results-content">
-                    <!-- Generated plan will be inserted here -->
-                </div>
-                <div class="results-actions">
-                    <button class="btn btn-primary" onclick="window.print()">
-                        Print Your Plan
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="instructions-section">
-      <div class="instruction-card">
-        <h3 class="instruction-title">Getting Started</h3>
-        <ol>
-          <li>Fill out the quick 10 question survey</li>
-          <li>Press Enter or click Send to submit</li>
-          <li>Wait for the AI to process and generate a response</li>
-          <li>Check our your custom fitness and nutrotion plan!</li>
-        </ol>
-      </div>
-      <div class="instruction-card">
-        <h3 class="instruction-title">Tips for Best Results</h3>
-        <ol>
-          <li>Be specific in your responses</li>
-          <li>Provide context when needed</li>
-          <li>Use natural language</li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
+    <!-- End Dashboard Section -->
+    
     <script src="index.js"></script>
     <script src="config.js"></script>
-<script type="module">
-  import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
-  const webhookUrl = localStorage.getItem('webhook_url')
-
-  createChat({
-    webhookUrl: webhookUrl,
-    target: '#n8n-chat',
-    mode: 'fullscreen',
-    showWelcomeScreen: false,
-    initialMessages: [
-      '👋 Hi! How can I help!'
-    ],
-    i18n: {
-      en: {
-        title: 'Boon Fays DM Agent',
-        subtitle: "Wait for the text input area to load before interacting with the agent. Response times are delayed 5 sec to simulate typing speed",
-        footer: '',
-        getStarted: 'New Conversation',
-        inputPlaceholder: 'Type your message...',
-      },
-    },
-    webhookConfig: {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    }
-  });
-</script>
   </body>
 </html>
+
