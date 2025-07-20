@@ -1,16 +1,9 @@
-// LLM_NOTE: Refactored for Mass Email Dashboard. Survey logic removed.
+// LLM_NOTE: Refactored to use Vercel API proxy for secure webhook handling.
 
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("email-form");
   const feedback = document.getElementById("form-feedback");
-  const webhookUrl = window.FITNESS_SURVEY_CONFIG?.webhookUrl;
-
-  if (!webhookUrl || webhookUrl === '' || webhookUrl === '__FITNESS_SURVEY_WEBHOOK_URL__') {
-    feedback.textContent = "Error: Webhook URL not configured. Please set BoonFayWebhookURL in your .env file and run the build script.";
-    feedback.style.color = '#ff4d4f';
-    form.querySelector('button[type="submit"]').disabled = true;
-    return;
-  }
+  const webhookUrl = '/api/boonfay-webhook';
 
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -33,16 +26,16 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     try {
-        const response = await fetch(webhookUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
+      const response = await fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
           "Accept": "application/json"
         },
         body: JSON.stringify(payload)
       });
-    
-        if (!response.ok) {
+
+      if (!response.ok) {
         const errorText = await response.text();
         feedback.textContent = `Error: ${response.status} - ${errorText}`;
         feedback.style.color = '#ff4d4f';
